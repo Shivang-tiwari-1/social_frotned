@@ -2,7 +2,7 @@
 
 import { useUser } from '@/Context/User/UserContext';
 import { Card, CardContent } from '@/Components/ui/card';
-import { User } from 'lucide-react'; // Optional: icon for followers
+import { User } from 'lucide-react'; 
 
 export default function FollowersPage() {
     const { followers } = useUser()
