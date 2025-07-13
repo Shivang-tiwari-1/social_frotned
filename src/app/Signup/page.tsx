@@ -14,7 +14,6 @@ export default function SignupPage() {
 
   const handleSignup = async () => {
     if (!username || !password) {
-      // optional error UI instead of alert
       return;
     }
 
@@ -24,13 +23,11 @@ export default function SignupPage() {
       setPassword('');
       setIsSignedUp(true);
 
-      // Show success message for 2 seconds, then return to form
       setTimeout(() => {
         setIsSignedUp(false);
       }, 2000);
     } catch (err) {
       console.error(err);
-      // You can also show error UI here
     }
   };
 
