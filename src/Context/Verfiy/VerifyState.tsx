@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import VerifyContext, { useAuth } from './verifyContext';
-import { useRouter } from 'next/navigation'; // ✅ correct for App Router
+import { useRouter } from 'next/navigation'; 
 import { useVerify } from '../User/UserContext';
 
 interface AuthState {
