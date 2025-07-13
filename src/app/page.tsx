@@ -25,7 +25,6 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 text-black relative">
-      {/* Main Profile Info */}
       <div className="pb-6 border-b border-gray-300">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <h1 className="text-2xl font-semibold">{user?.username}</h1>
@@ -37,7 +36,6 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Posts Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
         {userPost.length > 0 ? (
           userPost.map((data, idx) => (
