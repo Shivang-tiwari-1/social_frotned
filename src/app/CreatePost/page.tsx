@@ -22,15 +22,13 @@ export default function CreatePostPage() {
     create_post(title, description);
     console.log({ title, description });
 
-    // Show success message
     setIsSubmitted(true);
 
-    // Reset form after delay
     setTimeout(() => {
       setTitle('');
       setDescription('');
       setIsSubmitted(false);
-    }, 2000); // 2 seconds
+    }, 2000); 
   };
 
   return (
