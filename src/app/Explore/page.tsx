@@ -10,8 +10,7 @@ import { Card, CardContent } from '@/Components/ui/card';
 
 export default function TimelinePage() {
   const { auth } = useVerify();
-  const { find_to_follow, people, follow_request } = useUser(); // Ensure this is exposed in your context
-
+  const { find_to_follow, people, follow_request } = useUser(); 
   useEffect(() => {
     if (auth?.accessToken) {
       find_to_follow();
@@ -37,13 +36,13 @@ export default function TimelinePage() {
         {people?.map((person: any) => (
           <Card key={person._id}>
             <CardContent className="p-4 flex justify-between items-center">
-              {/* User Info */}
+          
               <div>
                 <p className="font-semibold text-black text-sm">@{person.username}</p>
                 <p className="text-xs text-muted-foreground">{person.email}</p>
               </div>
 
-              {/* Follow Button */}
+   
               <Button onClick={() => handleFollow(person._id)} className="text-sm">
                 Follow
               </Button>
