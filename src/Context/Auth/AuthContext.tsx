@@ -1,4 +1,4 @@
-// Context/AuthContext.ts
+
 import { createContext, useContext } from "react";
 
 export type AuthContextType = {
