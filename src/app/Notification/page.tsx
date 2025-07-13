@@ -22,10 +22,8 @@ export default function NotificationPage() {
     await accept_follow(id);
     setFollowAccepted(true);
 
-    // Refresh request list after accepting
     fetch_all_Follow_request();
 
-    // Show success message temporarily
     setTimeout(() => {
       setFollowAccepted(false);
     }, 2000);
