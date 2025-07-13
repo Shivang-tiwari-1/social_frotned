@@ -31,7 +31,6 @@ export default function Navbar() {
 
             }
 
-            {/* Mobile Menu (shown on small screens) */}
             <div className="md:hidden">
                 <Sheet>
                     <SheetTrigger className="text-lg">Menu</SheetTrigger>
