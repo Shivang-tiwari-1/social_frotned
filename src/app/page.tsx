@@ -1,103 +1,81 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent } from '@/Components/ui/card';
+import { useUser } from '@/Context/User/UserContext';
+import { useVerify } from '@/Context/Verfiy/verifyContext';
+
+export default function ProfilePage() {
+
+  const router = useRouter();
+  const { fetching_user, user, fetching_post, userPost, fetch_user_post } = useUser();
+  const { auth } = useVerify();
+
+  const [ selectedPost, setSelectedPost ] = useState<{ title: string; description: string } | null>(null);
+
+  useEffect(() => {
+    if (auth.accessToken) {
+      fetching_user();
+      fetching_post();
+      fetch_user_post()
+    }
+  }, [ auth.accessToken ]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="max-w-4xl mx-auto px-4 py-10 text-black relative">
+      {/* Main Profile Info */}
+      <div className="pb-6 border-b border-gray-300">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <h1 className="text-2xl font-semibold">{user?.username}</h1>
+          <Button onClick={() => router.push('/CreatePost')}>Create Post</Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="flex gap-8 text-sm sm:text-base mb-4">
+          <Button onClick={() => router.push('/Followers')} className='cursor-pointer'><strong>{user?.follwers?.length ?? 0}</strong> followers</Button>
+          <Button onClick={() => router.push('/Following')} className='cursor-pointer' ><strong>{user?.following?.length ?? 0}</strong> following</Button>
+        </div>
+      </div>
+
+      {/* Posts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+        {userPost.length > 0 ? (
+          userPost.map((data, idx) => (
+            <Card key={data._id || idx} className="h-auto p-4">
+              <CardContent className="space-y-2 text-muted-foreground">
+                <h2 className="text-lg font-semibold text-black">
+                  Post #{idx + 1}: {data.title}
+                </h2>
+                <p className="text-sm">
+                  {data.description.length > 10
+                    ? `${data.description.slice(0, 10)}...`
+                    : data.description}
+                </p>
+                {data.description.length > 10 && (
+                  <button
+                    onClick={() => setSelectedPost({ title: data.title, description: data.description })}
+                    className="text-blue-600 hover:underline text-sm"
+                  >
+                    View More
+                  </button>
+                )}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full flex justify-center items-center h-48">
+            <h1 className="text-xl text-muted-foreground">No posts available</h1>
+          </div>
+        )}
+      </div>
+
+      {selectedPost && (
+        <div className="fixed inset-0 bg-white bg-opacity-95 z-50 flex flex-col items-center justify-center px-6 text-center">
+          <h2 className="text-2xl font-bold mb-4">{selectedPost.title}</h2>
+          <p className="text-base text-gray-700 max-w-xl">{selectedPost.description}</p>
+          <Button className="mt-6" onClick={() => setSelectedPost(null)}>Close</Button>
+        </div>
+      )}
     </div>
   );
 }
